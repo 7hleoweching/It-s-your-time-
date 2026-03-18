@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -13,24 +13,25 @@
         .mono { font-family: 'JetBrains Mono', monospace; }
         .glass { background: rgba(30, 41, 59, 0.4); backdrop-filter: blur(15px); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 24px; }
         input, textarea { background: rgba(0,0,0,0.2) !important; border: 1px solid rgba(255,255,255,0.1) !important; color: inherit !important; width: 100%; padding: 12px; border-radius: 12px; font-size: 14px; margin-bottom: 10px; }
+        .cv-preview { background: white; color: black; font-family: serif; padding: 40px; border-radius: 8px; margin-top: 20px; text-align: left; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .neon-red { color: #ff4444; text-shadow: 0 0 10px rgba(255, 68, 68, 0.3); }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center px-4 py-8 text-center">
+<body class="min-h-screen flex flex-col items-center px-4 py-8">
 
     <button onclick="document.body.classList.toggle('light-mode')" class="fixed top-4 right-4 glass p-2 rounded-full text-[10px] mono z-50">🌓 MODE</button>
 
-    <header class="mb-10">
+    <header class="text-center mb-10">
         <h1 class="text-4xl font-black italic uppercase tracking-tighter">FUTURE <span class="text-sky-400">NAGALAND</span></h1>
-        <p class="mono text-[10px] opacity-50 uppercase tracking-widest mt-1">Lead Architect: C. Weching Konyak // NIELIT Kohima</p>
+        <p class="mono text-[10px] opacity-50 uppercase tracking-widest mt-1">Lead Architect: C. Weching Konyak</p>
     </header>
 
     <div class="grid grid-cols-2 gap-4 w-full max-w-lg mb-8">
-        <div class="glass p-4 border-t-2 border-sky-400">
+        <div class="glass p-4 text-center border-t-2 border-sky-400">
             <p class="mono text-[8px] opacity-60 uppercase mb-1">Reality (Clockwise)</p>
             <div id="clock-forward" class="text-xl font-bold text-sky-400 mono">00:00:00</div>
         </div>
-        <div class="glass p-4 border-t-2 border-red-500">
+        <div class="glass p-4 text-center border-t-2 border-red-500">
             <p class="mono text-[8px] opacity-60 uppercase mb-1">Doubters (Anti-Clock)</p>
             <div id="clock-backward" class="text-xl font-bold neon-red mono">00:00:00</div>
         </div>
@@ -40,8 +41,8 @@
         <h3 class="mono text-xs text-sky-400 mb-3 font-bold flex items-center justify-center gap-2">
             <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> NAGA-AI GLOBAL CORE
         </h3>
-        <div id="chat-box" class="h-56 overflow-y-auto text-[11px] space-y-3 p-3 bg-black/20 rounded-2xl mb-4 leading-relaxed text-left">
-            <div class="text-sky-400/70 italic">AI: System Online. I am programmed to answer global and local queries. Ask me "Who is the CEO of Google?" or "Meaning of life".</div>
+        <div id="chat-box" class="h-48 overflow-y-auto text-[11px] space-y-3 p-3 bg-black/20 rounded-2xl mb-4 text-left">
+            <div class="text-sky-400/70 italic">AI: Ask me "Meaning of success" or "A for".</div>
         </div>
         <div class="flex gap-2">
             <input id="chat-in" type="text" class="mb-0" placeholder="Type a question...">
@@ -49,76 +50,100 @@
         </div>
     </section>
 
-    <section class="w-full max-w-lg glass p-6 mb-8">
-        <h3 class="mono text-xs text-sky-400 mb-4 font-bold uppercase">Technical Planner // Calculator</h3>
-        <div class="flex gap-2 mb-4">
-            <input id="calc-in" type="text" class="mono" placeholder="Math here (e.g. 1024/8)">
-            <button onclick="calculate()" class="bg-white text-black px-4 py-2 rounded-xl font-bold text-xs">SOLVE</button>
-        </div>
-        <div class="flex gap-3">
-            <div id="calc-res" class="flex-1 bg-black/20 p-6 rounded-2xl text-3xl font-bold border border-white/5">0</div>
+    <section class="w-full max-w-lg glass p-6 mb-8 border-l-4 border-sky-400">
+        <h3 class="mono text-xs text-sky-400 mb-4 font-bold uppercase text-left">Resume Architect</h3>
+        <input id="uName" type="text" placeholder="Full Name">
+        <input id="uEdu" type="text" placeholder="Qualification (e.g. 12 Pass)">
+        <input id="uSkill" type="text" placeholder="Top Skills">
+        <textarea id="uExp" rows="3" placeholder="Experience or Project Details"></textarea>
+        <div class="grid grid-cols-2 gap-2">
+            <button onclick="generateCV()" class="py-4 bg-sky-500 text-slate-950 font-black rounded-xl uppercase text-[10px] tracking-widest">Generate CV</button>
+            <button onclick="shareWhatsApp()" class="py-4 bg-green-500 text-white font-black rounded-xl uppercase text-[10px] tracking-widest">Share to WA</button>
         </div>
     </section>
 
-    <footer class="opacity-30 pb-10">
+    <section id="cv-area" class="w-full max-w-lg hidden mb-10">
+        <div id="cv-output" class="cv-preview"></div>
+        <button onclick="window.print()" class="mt-4 w-full py-3 border-2 border-sky-400 text-sky-400 rounded-xl font-bold text-xs uppercase">Save as PDF</button>
+    </section>
+
+    <section class="w-full max-w-lg glass p-6 mb-8">
+        <h3 class="mono text-xs text-sky-400 mb-4 font-bold uppercase">Technical Planner</h3>
+        <div class="flex gap-2 mb-4">
+            <input id="calc-in" type="text" class="mono" placeholder="Math (e.g. 500x12)">
+            <button onclick="calculate()" class="bg-white text-black px-4 py-2 rounded-xl font-bold text-xs">SOLVE</button>
+        </div>
+        <div class="bg-black/20 p-6 rounded-2xl text-3xl font-bold text-center" id="calc-res">0</div>
+    </section>
+
+    <footer class="text-center opacity-30 pb-10">
         <p class="mono text-[8px] tracking-widest uppercase">© 2026-2029 // Designed by C. Weching Konyak</p>
-        <p class="mono text-[7px] mt-2">#SunderPichai #GoogleAI #NagalandTech</p>
     </footer>
 
     <script>
-        // DUAL CLOCK SYNC
+        // CLOCK
         setInterval(() => {
             const now = new Date();
             document.getElementById('clock-forward').innerText = now.toLocaleTimeString();
-            const h = 23 - now.getHours();
-            const m = 59 - now.getMinutes();
-            const s = 59 - now.getSeconds();
-            document.getElementById('clock-backward').innerText = 
-                `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+            const h = 23 - now.getHours(), m = 59 - now.getMinutes(), s = 59 - now.getSeconds();
+            document.getElementById('clock-backward').innerText = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
         }, 1000);
 
-        // CALC LOGIC
+        // CALC
         function calculate() {
             let input = document.getElementById('calc-in').value;
             let clean = input.replace(/×/g, '*').replace(/x/g, '*').replace(/÷/g, '/');
-            try {
-                document.getElementById('calc-res').innerText = eval(clean);
-            } catch { alert("Invalid Math"); }
+            try { document.getElementById('calc-res').innerText = eval(clean); } catch { alert("Invalid Math"); }
         }
 
-        // AI GLOBAL BRAIN
+        // AI
         function sendChat() {
             const input = document.getElementById('chat-in').value.toLowerCase();
             const box = document.getElementById('chat-box');
             if(!input) return;
-
             box.innerHTML += `<div class="text-right text-white/40 italic">"${input}"</div>`;
             
-            let reply = "Accessing Global Vision data... Query status: Neutral.";
+            let reply = "Processing vision data...";
+            if(input.includes("ceo of google")) reply = "Sundar Pichai is the CEO of Google.";
+            if(input.includes("a for")) reply = "A stands for Artificial Intelligence—the engine of our future!";
+            if(input.includes("success")) reply = "Success is moving from failure to failure without loss of enthusiasm.";
 
-            // BASIC QUESTIONS
-            if(input.includes("a for")) reply = "A is for Artificial Intelligence—the spark that will light up Nagaland's future!";
-            if(input.includes("hello") || input.includes("hi")) reply = "Greetings, Citizen of the World. I am Naga-AI, built by C. Weching Konyak.";
-            
-            // GLOBAL QUESTIONS
-            if(input.includes("ceo of google")) reply = "The CEO of Google is Sundar Pichai. He is a great inspiration for tech students like us!";
-            if(input.includes("meaning of life")) reply = "The meaning of life is to find your gift. The purpose of life is to give it away.";
-            if(input.includes("success")) reply = "Success is not final, failure is not fatal: it is the courage to continue that counts.";
-            if(input.includes("weather")) reply = "I cannot see live weather yet, but in Nagaland, the future looks bright and sunny!";
-            
-            // LOCAL DATA
-            if(input.includes("konyak")) reply = "The Konyak people are warriors of tradition. Now, we become warriors of technology.";
-            if(input.includes("nielit")) reply = "NIELIT Kohima is the heart of our technical development.";
-
-            // VOICE ENGINE
             const speech = new SpeechSynthesisUtterance(reply);
             window.speechSynthesis.speak(speech);
-
             setTimeout(() => {
                 box.innerHTML += `<div class="text-sky-400 font-bold">AI: ${reply}</div>`;
                 box.scrollTop = box.scrollHeight;
             }, 600);
             document.getElementById('chat-in').value = "";
+        }
+
+        // CV LOGIC
+        function generateCV() {
+            const name = document.getElementById('uName').value;
+            const edu = document.getElementById('uEdu').value;
+            const skill = document.getElementById('uSkill').value;
+            const exp = document.getElementById('uExp').value;
+            if(!name || !edu) return alert("Enter Name & Education");
+
+            document.getElementById('cv-output').innerHTML = `
+                <h1 style="font-size:24px; border-bottom:2px solid #333;">${name.toUpperCase()}</h1>
+                <p><strong>Objective:</strong> Driving innovation via modern technical skills.</p>
+                <h3>EDUCATION</h3><p>${edu}</p>
+                <h3>CORE SKILLS</h3><p>${skill}</p>
+                <h3>PROJECTS</h3><p>${exp}</p>
+            `;
+            document.getElementById('cv-area').classList.remove('hidden');
+            document.getElementById('cv-area').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // WHATSAPP SHARE LOGIC
+        function shareWhatsApp() {
+            const name = document.getElementById('uName').value;
+            const edu = document.getElementById('uEdu').value;
+            if(!name) return alert("Please enter your name first!");
+            
+            const text = `🚀 Check out my professional CV! %0A%0AArchitect: ${name} %0AQualification: ${edu} %0A%0AGenerated on Vision 2029 Terminal: https://7hleoweching.github.io/`;
+            window.open(`https://wa.me/?text=${text}`, '_blank');
         }
     </script>
 </body>
