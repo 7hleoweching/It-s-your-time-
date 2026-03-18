@@ -3,102 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NAGAGEN OS v3001 | ARCHITECT C. WECHING KONYAK</title>
+    <title>NAGAGEN OS | ARCHITECT C. WECHING KONYAK</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=Orbitron:wght@400;900&display=swap');
-        body { background-color: #020617; color: #22d3ee; font-family: 'Fira Code', monospace; }
-        .hologram-card { 
-            background: rgba(0, 0, 0, 0.6); 
-            border: 1px solid rgba(34, 211, 238, 0.2); 
-            backdrop-filter: blur(10px);
-            border-radius: 8px;
-        }
+        :root { --neon: #00f2ff; --void: #020617; }
+        body { background: var(--void); color: white; font-family: 'Fira Code', monospace; overflow-x: hidden; margin: 0; }
+        #canvas-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.2; }
+        #matrix-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 50; pointer-events: none; opacity: 0; transition: 1s; }
         .orbitron { font-family: 'Orbitron', sans-serif; }
-        input, textarea { 
-            background: rgba(0, 0, 0, 0.8) !important; 
-            border: 1px solid #083344 !important; 
-            color: #22d3ee !important; 
-            outline: none;
-        }
-        input:focus { border-color: #22d3ee !important; }
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-thumb { background: #083344; border-radius: 10px; }
+        .hologram-card { background: rgba(0, 242, 255, 0.03); border: 1px solid rgba(0, 242, 255, 0.2); backdrop-filter: blur(12px); border-radius: 8px; }
+        input, textarea { background: rgba(0, 0, 0, 0.8) !important; border: 1px solid #083344 !important; color: var(--neon) !important; outline: none; }
+        .mic-active { color: #ff0055 !important; animation: pulse 1s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
     </style>
 </head>
 <body class="p-4 md:p-8">
 
-    <header class="text-center mb-10">
+    <canvas id="canvas-bg"></canvas>
+    <canvas id="matrix-canvas"></canvas>
+
+    <header class="text-center mb-12 cursor-pointer" onclick="toggleMatrix()">
         <h1 class="orbitron text-4xl font-black italic tracking-tighter uppercase">
-            NAGA<span class="text-white">GEN</span> OS <span class="text-[12px] align-top opacity-50">V3001</span>
+            NAGA<span class="text-cyan-400">GEN</span> OS <span class="text-[12px] align-top opacity-50">V3001</span>
         </h1>
         <p class="text-[10px] tracking-[0.4em] opacity-40 mt-2 uppercase">Architect: C. Weching Konyak // Naginimora Terminal</p>
     </header>
 
-    <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 mb-24">
         
         <div class="space-y-6">
             <section class="hologram-card p-6 border-t-2 border-cyan-500">
                 <div class="flex justify-between items-center mb-4">
-                    <h2 class="orbitron text-[11px] font-bold text-cyan-400">GEMINI_NEURAL_LINK</h2>
-                    <span class="text-[9px] bg-cyan-950 px-2 py-1 rounded border border-cyan-800">KONYAK_TRANSLATE: ON</span>
+                    <h2 class="orbitron text-[11px] font-bold text-cyan-400 tracking-widest text-cyan-500">NEURAL_LINK</h2>
+                    <span class="text-[9px] border border-cyan-800 px-2 py-1 rounded">KONYAK_AI: ON</span>
                 </div>
                 
-                <div id="chat-box" class="h-64 overflow-y-auto mb-4 bg-black/40 p-4 border border-white/5 text-[12px] space-y-4">
-                    <div class="opacity-40 italic">System: Vocal link ready. Awaiting Architect's input...</div>
+                <div id="chat-box" class="h-64 overflow-y-auto mb-4 bg-black/40 p-4 border border-white/5 text-[12px] space-y-4 rounded">
+                    <div class="opacity-40 italic">System: Neural link stable. Awaiting Architect...</div>
                 </div>
 
                 <div class="flex gap-2">
-                    <input id="chat-in" type="text" class="flex-1 p-3 rounded text-sm" placeholder="Speak or Type...">
-                    <button onclick="sendChat()" class="orbitron bg-cyan-500 text-black px-6 font-bold text-xs rounded hover:bg-white transition">ASK</button>
+                    <input id="chat-in" type="text" class="flex-1 p-3 rounded text-sm" placeholder="Ask anything...">
+                    <button id="mic-btn" onclick="startVoice()" class="p-3 border border-cyan-500 rounded hover:bg-cyan-500/20">🎤</button>
+                    <button onclick="sendChat()" class="orbitron bg-cyan-500 text-black px-6 font-bold text-xs rounded uppercase">Ask</button>
                 </div>
             </section>
 
             <section class="hologram-card p-6 border-l-2 border-amber-500">
-                <h2 class="orbitron text-[11px] font-bold text-amber-500 mb-4">NAGALAND_STUDENT_CAREER</h2>
+                <h2 class="orbitron text-[11px] font-bold text-amber-500 mb-4">STUDENT_PORTAL</h2>
                 <div class="space-y-3 text-[11px] opacity-80">
-                    <p>🎓 <span class="font-bold">Scholarship:</span> Post-Matric & Merit 2026 Portal Syncing.</p>
-                    <p>🏛️ <span class="font-bold">NPSC:</span> Tech-Services Exam Syllabus available in AI.</p>
-                    <p>💼 <span class="font-bold">Jobs:</span> Web Dev openings in Dimapur & Kohima.</p>
+                    <p>🎓 <b>Scholarship:</b> Post-Matric & Merit 2026 Syncing...</p>
+                    <p>🏛️ <b>NPSC:</b> Tech-Services Exam Syllabus Active.</p>
                 </div>
             </section>
         </div>
 
         <div class="space-y-6">
             <section class="hologram-card p-6 border-r-2 border-cyan-500">
-                <h2 class="orbitron text-[11px] font-bold text-cyan-400 mb-6">BIO_DATA_ARCHITECT</h2>
+                <h2 class="orbitron text-[11px] font-bold text-cyan-400 mb-6 uppercase">Bio_Data_Architect</h2>
                 <div class="space-y-4">
-                    <div>
-                        <label class="text-[9px] opacity-50 block mb-1">IDENTIFICATION</label>
-                        <input id="uName" type="text" class="w-full p-2 text-sm uppercase font-bold" value="C WECHING KONYAK">
+                    <input id="uName" type="text" class="w-full p-2 text-sm uppercase font-bold" value="C WECHING KONYAK">
+                    <input id="uEdu" type="text" class="w-full p-2 text-sm" placeholder="Qualification">
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="window.print()" class="bg-white text-black py-3 orbitron font-bold text-[10px] rounded uppercase">Construct PDF</button>
+                        <button onclick="calculate()" class="border border-cyan-500 text-cyan-500 py-3 orbitron font-bold text-[10px] rounded uppercase">Solve Math</button>
                     </div>
-                    <div>
-                        <label class="text-[9px] opacity-50 block mb-1">QUALIFICATION</label>
-                        <input id="uEdu" type="text" class="w-full p-2 text-sm" placeholder="BCA @ NIELIT Kohima">
-                    </div>
-                    <div>
-                        <label class="text-[9px] opacity-50 block mb-1">TECHNICAL_SKILLS</label>
-                        <input id="uSkill" type="text" class="w-full p-2 text-sm" placeholder="Web Dev, AI, Mobile Apps">
-                    </div>
-                    <div>
-                        <label class="text-[9px] opacity-50 block mb-1">PROJECTS_HISTORY</label>
-                        <textarea id="uExp" rows="3" class="w-full p-2 text-sm" placeholder="Konyak Language App, NagaGen OS..."></textarea>
-                    </div>
-                    <button class="w-full bg-white text-black py-3 orbitron font-bold text-[10px] rounded hover:bg-cyan-400 transition">
-                        CONSTRUCT ARCHIVE (PDF)
-                    </button>
+                </div>
+            </section>
+
+            <section class="hologram-card p-6 flex gap-4">
+                <div class="flex-1">
+                    <h2 class="orbitron text-[9px] opacity-50 mb-2">CALCULATOR_IN</h2>
+                    <input id="calc-in" type="text" class="w-full text-xl font-bold p-2 mb-2" placeholder="0">
+                    <div id="calc-res" class="text-3xl font-black text-cyan-400">0</div>
+                </div>
+                <div class="w-1/3 bg-black/50 p-2 rounded border border-white/5 overflow-y-auto h-24">
+                    <h3 class="text-[8px] opacity-30 uppercase border-b border-white/10 mb-1">History</h3>
+                    <div id="calc-history" class="text-[9px] opacity-50 italic">Log Empty</div>
                 </div>
             </section>
         </div>
-    </div>
+    </main>
 
-    <div class="fixed bottom-0 left-0 w-full bg-black/80 border-t border-cyan-900 py-2 overflow-hidden">
+    <div class="fixed bottom-0 left-0 w-full bg-black/90 border-t border-cyan-900 py-2">
         <div class="whitespace-nowrap animate-pulse text-[9px] orbitron text-cyan-400 px-4">
-            [STATUS] NEURAL LINK STABLE ... [LOCATION] NAGINIMORA TERMINAL ... [USER] C. WECHING KONYAK ... [GOAL] KONYAK LANGUAGE PRESERVATION ...
+            [STATUS] LINK STABLE ... [LOCATION] NAGINIMORA ... [GOAL] LANGUAGE PRESERVATION ...
         </div>
     </div>
 
     <script src="script.js"></script>
 </body>
 </html>
-
