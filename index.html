@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FUTURE NAGALAND | VISION 2029</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@300;700&display=swap');
+        :root { --bg: #020617; --text: #f1f5f9; --sky: #00f2ff; }
+        .light-mode { --bg: #f8fafc; --text: #0f172a; --sky: #2563eb; }
+        body { background-color: var(--bg); color: var(--text); font-family: 'Space Grotesk', sans-serif; transition: 0.3s; padding-bottom: 80px; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .glass { background: rgba(30, 41, 59, 0.4); backdrop-filter: blur(15px); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 24px; }
+        input, textarea { background: rgba(0,0,0,0.2) !important; border: 1px solid rgba(255,255,255,0.1) !important; color: inherit !important; width: 100%; padding: 12px; border-radius: 12px; font-size: 14px; margin-bottom: 10px; }
+        .cv-preview { background: white; color: black; font-family: serif; padding: 40px; border-radius: 8px; margin-top: 20px; text-align: left; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .neon-red { color: #ff4444; text-shadow: 0 0 10px rgba(255, 68, 68, 0.3); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center px-4 py-8">
+
+    <button onclick="document.body.classList.toggle('light-mode')" class="fixed top-4 right-4 glass p-2 rounded-full text-[10px] mono z-50">🌓 SWITCH MODE</button>
+
+    <header class="text-center mb-10">
+        <h1 class="text-4xl font-black italic uppercase tracking-tighter">FUTURE <span class="text-sky-400">NAGALAND</span></h1>
+        <p class="mono text-[10px] opacity-50 uppercase tracking-widest mt-1">Lead Architect: C. Weching Konyak</p>
+    </header>
+
+    <div class="grid grid-cols-2 gap-4 w-full max-w-lg mb-8">
+        <div class="glass p-4 text-center border-t-2 border-sky-400">
+            <p class="mono text-[8px] opacity-60 uppercase mb-1">Reality (Forward)</p>
+            <div id="clock-forward" class="text-xl font-bold text-sky-400 mono">00:00:00</div>
+        </div>
+        <div class="glass p-4 text-center border-t-2 border-red-500">
+            <p class="mono text-[8px] opacity-60 uppercase mb-1">Doubters (Backward)</p>
+            <div id="clock-backward" class="text-xl font-bold neon-red mono">00:00:00</div>
+        </div>
+    </div>
+
+    <section class="w-full max-w-lg glass p-6 mb-8">
+        <h3 class="mono text-xs text-sky-400 mb-4 font-bold uppercase">P-CALC v1.0 // PERSISTENT LOG</h3>
+        <div class="flex gap-2 mb-4">
+            <input id="calc-in" type="text" class="mono" placeholder="Enter math (e.g. 500*12)">
+            <button onclick="calculate()" class="bg-sky-500 text-black px-4 py-2 rounded-xl font-bold text-xs">SOLVE</button>
+        </div>
+        <div class="flex gap-3">
+            <div id="calc-res" class="flex-1 bg-black/20 p-6 rounded-2xl text-3xl font-bold text-center border border-white/5">0</div>
+            <div id="calc-log" class="w-1/3 bg-black/40 p-2 rounded-xl text-[9px] mono opacity-60 h-24 overflow-y-auto">LOG:</div>
+        </div>
+    </section>
+
+    <section class="w-full max-w-lg glass p-5 mb-8">
+        <h3 class="mono text-xs text-sky-400 mb-3 font-bold flex items-center gap-2">
+            <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> NAGA-AI OFFLINE CORE
+        </h3>
+        <div id="chat-box" class="h-48 overflow-y-auto text-[11px] space-y-3 p-3 bg-black/20 rounded-2xl mb-4 leading-relaxed">
+            <div class="text-sky-400/70 italic">AI: System Ready. Type "hello" to begin.</div>
+        </div>
+        <div class="flex gap-2">
+            <input id="chat-in" type="text" class="mb-0" placeholder="Type a command...">
+            <button onclick="sendChat()" class="bg-white text-black px-4 py-2 rounded-xl font-bold text-xs">SEND</button>
+        </div>
+    </section>
+
+    <section class="w-full max-w-lg glass p-6 mb-8 border-l-4 border-sky-400">
+        <h3 class="mono text-xs text-sky-400 mb-4 font-bold uppercase">Resume Architect</h3>
+        <input id="uName" type="text" placeholder="Full Name">
+        <input id="uEdu" type="text" placeholder="Qualification">
+        <input id="uSkill" type="text" placeholder="Top Skills">
+        <textarea id="uExp" rows="3" placeholder="Experience / Projects"></textarea>
+        <button onclick="generateCV()" class="w-full py-4 bg-sky-500 text-slate-950 font-black rounded-xl uppercase text-xs tracking-widest">Generate Resume</button>
+    </section>
+
+    <section id="cv-area" class="w-full max-w-lg hidden mb-10">
+        <div id="cv-output" class="cv-preview"></div>
+        <button onclick="window.print()" class="mt-4 w-full py-3 border-2 border-sky-400 text-sky-400 rounded-xl font-bold text-xs uppercase">Save as PDF</button>
+    </section>
+
+    <footer class="text-center space-y-4">
+        <div class="flex gap-4 justify-center">
+            <a href="https://wa.me/918798474136" class="text-xs mono text-green-500 font-bold underline">WhatsApp</a>
+            <a href="mailto:7hleoweching@gmail.com" class="text-xs mono text-sky-400 font-bold underline">Email</a>
+        </div>
+        <p class="mono text-[8px] opacity-30">#cweching #konyak #Google #SunderPichai</p>
+    </footer>
+
+    <script>
+        // DUAL CLOCK LOGIC
+        setInterval(() => {
+            const now = new Date();
+            // Forward Clock
+            document.getElementById('clock-forward').innerText = now.toLocaleTimeString();
+            // Backward Clock (Artificial Anti-Clock)
+            const hours = 23 - now.getHours();
+            const mins = 59 - now.getMinutes();
+            const secs = 59 - now.getSeconds();
+            document.getElementById('clock-backward').innerText = 
+                `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }, 1000);
+
+        // CALCULATOR LOGIC
+        function calculate() {
+            const input = document.getElementById('calc-in').value;
+            try {
+                const res = eval(input.replace('×', '*').replace('÷', '/'));
+                document.getElementById('calc-res').innerText = res;
+                document.getElementById('calc-log').innerHTML += `<div>${input} = ${res}</div>`;
+                document.getElementById('calc-in').value = "";
+            } catch { alert("Invalid Calculation"); }
+        }
+
+        // AI CHAT LOGIC
+        function sendChat() {
+            const input = document.getElementById('chat-in').value.toLowerCase();
+            const box = document.getElementById('chat-box');
+            if(!input) return;
+
+            box.innerHTML += `<div class="text-right text-white/50">"${input}"</div>`;
+            
+            let reply = "I am processing that data for the 2029 skill-net...";
+            if(input.includes("hello")) reply = "Welcome, Lead Architect. How shall we build Nagaland today?";
+            if(input.includes("konyak")) reply = "Language preservation app status: 75% complete.";
+            if(input.includes("nielit")) reply = "System Node: NIELIT Kohima verified.";
+
+            setTimeout(() => {
+                box.innerHTML += `<div class="text-sky-400">AI: ${reply}</div>`;
+                box.scrollTop = box.scrollHeight;
+            }, 500);
+            document.getElementById('chat-in').value = "";
+        }
+
+        // RESUME LOGIC
+        function generateCV() {
+            const name = document.getElementById('uName').value;
+            const edu = document.getElementById('uEdu').value;
+            const skill = document.getElementById('uSkill').value;
+            const exp = document.getElementById('uExp').value;
+            if(!name || !edu) return alert("Enter Name & Education");
+
+            document.getElementById('cv-output').innerHTML = `
+                <h1 style="font-size:24px; border-bottom:2px solid #333;">${name.toUpperCase()}</h1>
+                <p><strong>Objective:</strong> Driving regional innovation in Nagaland.</p>
+                <h3>EDUCATION</h3><p>${edu}</p>
+                <h3>SKILLS</h3><p>${skill}</p>
+                <h3>PROJECTS</h3><p>${exp}</p>
+                <footer style="margin-top:20px; font-size:10px; opacity:0.5;">Generated by Vision 2029 Terminal</footer>
+            `;
+            document.getElementById('cv-area').classList.remove('hidden');
+            document.getElementById('cv-area').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
