@@ -3,28 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TERMINAL 3001 | ARCHITECT KONYAK</title>
+    <title>NAGAGEN OS | ARCHITECT C. WECHING KONYAK</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=Orbitron:wght@400;900&display=swap');
-        :root { --neon: #00f2ff; --void: #020617; --matrix: #00ff41; }
-        body { background: var(--void); color: white; font-family: 'Fira Code', monospace; overflow-x: hidden; margin: 0; transition: 0.5s; }
+        :root { --neon: #00f2ff; --void: #020617; }
+        body { background: var(--void); color: white; font-family: 'Fira Code', monospace; overflow-x: hidden; margin: 0; }
         #canvas-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.2; }
-        .orbitron { font-family: 'Orbitron', sans-serif; }
-        
-        /* THE SURPRISE: MATRIX OVERLAY */
         #matrix-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 50; pointer-events: none; opacity: 0; transition: 1s; }
-        
-        .hologram { background: rgba(0, 242, 255, 0.03); border: 1px solid rgba(0, 242, 255, 0.2); backdrop-filter: blur(12px); border-radius: 4px; position: relative; }
-        .hologram:hover { border-color: var(--neon); box-shadow: 0 0 15px rgba(0, 242, 255, 0.2); }
-        
-        input, textarea { background: rgba(0, 0, 0, 0.7) !important; border: 1px solid rgba(0, 242, 255, 0.3) !important; color: var(--neon) !important; padding: 12px; outline: none; transition: 0.3s; }
-        input:focus { border-color: var(--neon) !important; box-shadow: 0 0 10px var(--neon); }
-
+        .orbitron { font-family: 'Orbitron', sans-serif; }
+        .hologram { background: rgba(0, 242, 255, 0.03); border: 1px solid rgba(0, 242, 255, 0.2); backdrop-filter: blur(12px); border-radius: 4px; }
+        input, textarea { background: rgba(0, 0, 0, 0.7) !important; border: 1px solid rgba(0, 242, 255, 0.3) !important; color: var(--neon) !important; padding: 12px; outline: none; width: 100%; }
         .ticker-wrap { width: 100%; overflow: hidden; background: rgba(0, 242, 255, 0.05); border-top: 1px solid var(--neon); }
         .ticker { display: inline-block; white-space: nowrap; padding-right: 100%; animation: ticker 45s linear infinite; }
         @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
-
         @media print { .no-print { display: none !important; } body { background: white !important; color: black !important; } }
     </style>
 </head>
@@ -33,47 +25,24 @@
     <canvas id="canvas-bg"></canvas>
     <canvas id="matrix-canvas"></canvas>
 
-    <div class="flex justify-between items-center mb-8 no-print orbitron text-[9px] tracking-widest text-cyan-500">
-        <div class="flex items-center gap-2">
-            <span class="w-2 h-2 bg-green-500 rounded-full animate-ping"></span> ONLINE: ARCHITECT_CORE
-        </div>
-        <div class="flex gap-6">
-            <span id="clock-real">REALITY: 00:00:00</span>
-            <span id="clock-meta" class="text-red-500">META_DECAY: 00:00:00</span>
-        </div>
-    </div>
-
     <header class="text-center mb-12 no-print cursor-pointer" onclick="toggleMatrix()">
-        <h1 class="orbitron text-4xl font-black tracking-tighter uppercase italic hover:text-cyan-300 transition">
+        <h1 class="orbitron text-4xl font-black tracking-tighter uppercase italic">
             Naga<span class="text-cyan-400">Gen</span> OS v3001
         </h1>
-        <p class="text-[9px] opacity-40 mt-2 uppercase tracking-[0.5em]">Click Title to Hack Reality // Architect: C. Weching Konyak</p>
+        <p class="text-[9px] opacity-40 mt-2 uppercase tracking-[0.5em]">Architect: C. Weching Konyak // Click to Hack</p>
     </header>
 
     <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 mb-24">
         
         <div class="space-y-6 no-print">
             <section class="hologram p-5 border-t-2 border-cyan-500">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="orbitron text-xs text-cyan-400">NEURAL_VOICE_CHAT</h2>
-                    <button onclick="toggleKonyak()" class="text-[8px] border border-cyan-800 px-2 rounded hover:bg-cyan-500 hover:text-black">TRANSLATE: KONYAK</button>
-                </div>
-                <div id="chat-box" class="h-48 overflow-y-auto mb-4 text-[11px] space-y-3 bg-black/40 p-3 rounded border border-white/5">
-                    <div class="opacity-50">System: Vocal link ready...</div>
+                <h2 class="orbitron text-xs mb-4 text-cyan-400">GEMINI_NEURAL_LINK</h2>
+                <div id="chat-box" class="h-64 overflow-y-auto mb-4 text-[11px] space-y-3 bg-black/40 p-3 rounded border border-white/5">
+                    <div class="opacity-50">System: Gemini 1.5 Pro Online. Awaiting Architect's command...</div>
                 </div>
                 <div class="flex gap-2">
-                    <input id="chat-in" type="text" placeholder="Speak or Type...">
-                    <button id="mic-btn" onclick="startVoice()" class="p-2 border border-cyan-500 rounded">🎤</button>
-                    <button onclick="sendChat()" class="bg-cyan-500 text-black px-4 font-bold text-xs orbitron rounded">ASK</button>
-                </div>
-            </section>
-
-            <section class="hologram p-5 border-t-2 border-yellow-500">
-                <h2 class="orbitron text-xs mb-4 text-yellow-500">NAGALAND_STUDENT_CAREER</h2>
-                <div class="text-[10px] space-y-2 opacity-80">
-                    <div class="p-2 border border-white/5 rounded">🎓 <b>Scholarship:</b> Post-Matric & Merit 2026 Portal Syncing.</div>
-                    <div class="p-2 border border-white/5 rounded">🏛️ <b>NPSC:</b> Tech-Services Exam Syllabus available in AI.</div>
-                    <div class="p-2 border border-white/5 rounded">💼 <b>Jobs:</b> Web Dev openings in Dimapur & Kohima.</div>
+                    <input id="chat-in" type="text" placeholder="Ask anything...">
+                    <button onclick="sendChat()" class="bg-cyan-500 text-black px-6 font-bold text-xs orbitron rounded">SEND</button>
                 </div>
             </section>
         </div>
@@ -84,33 +53,26 @@
                 <div class="space-y-3">
                     <input id="uName" type="text" placeholder="NAME">
                     <input id="uEdu" type="text" placeholder="QUALIFICATION">
-                    <input id="uSkill" type="text" placeholder="CORE ABILITIES">
-                    <textarea id="uExp" rows="4" placeholder="HISTORICAL DATA / PROJECTS"></textarea>
-                    <div class="grid grid-cols-2 gap-2">
-                        <button onclick="generateCV()" class="bg-cyan-500 text-black py-3 font-bold text-[10px] orbitron rounded">CONSTRUCT</button>
-                        <button onclick="shareWhatsApp()" class="border border-green-500 text-green-500 py-3 font-bold text-[10px] orbitron rounded">SYNC</button>
-                    </div>
+                    <input id="uSkill" type="text" placeholder="SKILLS">
+                    <textarea id="uExp" rows="4" placeholder="EXPERIENCE/PROJECTS"></textarea>
+                    <button onclick="generateCV()" class="w-full bg-cyan-500 text-black py-3 font-bold text-[10px] orbitron rounded">CONSTRUCT PDF</button>
                 </div>
             </section>
-            <div id="cv-area" class="hidden mt-6">
-                <div id="cv-output" class="bg-white text-black p-8 shadow-2xl rounded-sm"></div>
-                <button onclick="saveResume()" class="w-full mt-4 bg-cyan-600 text-white py-3 font-bold no-print text-xs orbitron">ARCHIVE TO PDF</button>
+            <div id="cv-area" class="hidden mt-6 bg-white text-black p-8 shadow-2xl rounded-sm">
+                <div id="cv-output"></div>
+                <button onclick="window.print()" class="w-full mt-4 bg-black text-white py-2 text-xs orbitron no-print">DOWNLOAD ARCHIVE</button>
             </div>
         </div>
 
-        <div class="no-print space-y-6">
+        <div class="no-print">
             <section class="hologram p-6 border-r-2 border-cyan-500">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="orbitron text-xs text-cyan-400">MATH_PROCESSOR</h2>
-                    <button onclick="downloadHistory()" class="text-[8px] underline opacity-30">EXPORT_LOG</button>
-                </div>
+                <h2 class="orbitron text-xs text-cyan-400 mb-4">MATH_PROCESSOR</h2>
                 <input id="calc-in" type="text" class="text-2xl font-bold mb-2" placeholder="0">
                 <button onclick="calculate()" class="w-full bg-white text-black py-2 font-bold orbitron text-[10px] mb-4">SOLVE</button>
-                
                 <div class="flex gap-4">
                     <div id="calc-res" class="flex-1 text-4xl font-black text-cyan-400 bg-black/50 p-4 border border-white/10 rounded">0</div>
                     <div class="w-2/5 bg-black/80 p-2 text-[9px] h-24 overflow-y-auto border border-white/10 rounded">
-                        <p class="opacity-30 border-b border-white/10 pb-1 mb-1">HISTORY</p>
+                        <p class="opacity-30 border-b border-white/10 mb-1">HISTORY</p>
                         <div id="calc-history" class="italic opacity-60">Empty</div>
                     </div>
                 </div>
@@ -120,141 +82,86 @@
 
     <div class="fixed bottom-0 left-0 ticker-wrap no-print">
         <div class="ticker orbitron text-[10px] py-2 text-cyan-400">
-            [UPDATE] Konyak Language App Beta Launch 2029... [NEWS] NIELIT Kohima signs AI Partnership... [JOBS] 50+ Web Developer Roles in Nagaland IT Park... [TECH] Quantum Computers now legal in Sector 7... 
+            [LIVE] Gemini AI connected via C. Weching Konyak's API... [CORE] Vision 3001 Status: Optimal... [NEWS] Konyak Language App Phase 1: Online...
         </div>
     </div>
 
     <script>
-        // BACKGROUND NEURAL NET
-        const canvas = document.getElementById('canvas-bg');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        function initCanvas() {
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            for(let i=0; i<80; i++) particles.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx: (Math.random()-0.5)*0.5, vy: (Math.random()-0.5)*0.5});
-        }
-        function animate() {
-            ctx.clearRect(0,0,canvas.width,canvas.height);
-            ctx.fillStyle = "#00f2ff"; ctx.strokeStyle = "rgba(0, 242, 255, 0.1)";
-            particles.forEach(p => {
-                p.x += p.vx; p.y += p.vy;
-                if(p.x<0 || p.x>canvas.width) p.vx *= -1; if(p.y<0 || p.y>canvas.height) p.vy *= -1;
-                ctx.beginPath(); ctx.arc(p.x, p.y, 1, 0, Math.PI*2); ctx.fill();
-            });
-            requestAnimationFrame(animate);
-        }
-        initCanvas(); animate();
+        const API_KEY = "AIzaSyAKDqBQIoxXvDrfL8fJjU8qYTqOMfkav04";
 
-        // SURPRISE: MATRIX EFFECT
-        const mCanvas = document.getElementById('matrix-canvas');
-        const mCtx = mCanvas.getContext('2d');
-        let matrixActive = false;
-        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$+-*/=%@#&";
-        let drops = [];
-        function initMatrix() {
-            mCanvas.width = window.innerWidth; mCanvas.height = window.innerHeight;
-            drops = Array(Math.floor(mCanvas.width/20)).fill(1);
-        }
-        function drawMatrix() {
-            if(!matrixActive) return;
-            mCtx.fillStyle = "rgba(0, 0, 0, 0.05)";
-            mCtx.fillRect(0, 0, mCanvas.width, mCanvas.height);
-            mCtx.fillStyle = "#00ff41";
-            mCtx.font = "15px monospace";
-            drops.forEach((y, i) => {
-                const text = chars[Math.floor(Math.random()*chars.length)];
-                mCtx.fillText(text, i*20, y*20);
-                if(y*20 > mCanvas.height && Math.random() > 0.975) drops[i] = 0;
-                drops[i]++;
-            });
-            requestAnimationFrame(drawMatrix);
-        }
-        function toggleMatrix() {
-            matrixActive = !matrixActive;
-            mCanvas.style.opacity = matrixActive ? "1" : "0";
-            if(matrixActive) { initMatrix(); drawMatrix(); playSound(440); }
-        }
-
-        // SURPRISE: SOUND EFFECTS
-        function playSound(freq) {
-            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.frequency.value = freq; gain.gain.value = 0.05;
-            osc.start(); osc.stop(audioCtx.currentTime + 0.1);
-        }
-
-        // CLOCKS
-        setInterval(() => {
-            const now = new Date();
-            document.getElementById('clock-real').innerText = `REALITY: ${now.toLocaleTimeString()}`;
-            const h = 23-now.getHours(), m = 59-now.getMinutes(), s = 59-now.getSeconds();
-            document.getElementById('clock-meta').innerText = `META_DECAY: ${h}:${m}:${s}`;
-        }, 1000);
-
-        // VOICE & AI
-        function startVoice() {
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if (!SpeechRecognition) return alert("Browser error.");
-            const rec = new SpeechRecognition();
-            rec.onstart = () => { document.getElementById('mic-btn').classList.add('mic-active'); playSound(880); };
-            rec.onresult = (e) => { document.getElementById('chat-in').value = e.results[0][0].transcript; sendChat(); };
-            rec.onend = () => document.getElementById('mic-btn').classList.remove('mic-active');
-            rec.start();
-        }
-
-        function sendChat() {
-            const val = document.getElementById('chat-in').value.toLowerCase();
+        async function sendChat() {
+            const input = document.getElementById('chat-in').value;
             const box = document.getElementById('chat-box');
-            if(!val) return;
-            playSound(660);
-            let reply = "Processing vision query...";
-            if(val.includes("cm of nagaland")) reply = "Neiphiu Rio is the current CM.";
-            if(val.includes("google ceo")) reply = "Sundar Pichai is the CEO of Google.";
-            
-            box.innerHTML += `<div class="text-right opacity-30">> ${val}</div>`;
-            setTimeout(() => {
-                box.innerHTML += `<div class="text-cyan-400 font-bold">AI: ${reply}</div>`;
-                box.scrollTop = box.scrollHeight;
-                window.speechSynthesis.speak(new SpeechSynthesisUtterance(reply));
-            }, 500);
+            if(!input) return;
+
+            box.innerHTML += `<div class="text-right opacity-30">> ${input}</div>`;
             document.getElementById('chat-in').value = "";
+            box.scrollTop = box.scrollHeight;
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: `You are NagaGen OS, a futuristic terminal built by C. Weching Konyak. Keep answers concise but professional. User asks: ${input}` }] }]
+                    })
+                });
+
+                const data = await response.json();
+                const aiReply = data.candidates[0].content.parts[0].text;
+
+                setTimeout(() => {
+                    box.innerHTML += `<div class="text-cyan-400 font-bold">AI: ${aiReply}</div>`;
+                    box.scrollTop = box.scrollHeight;
+                }, 300);
+            } catch (e) {
+                box.innerHTML += `<div class="text-red-500 text-[10px]">ERROR: LINK_SEVERED. Check API Key quota.</div>`;
+            }
         }
 
-        // MATH
-        let log = [];
         function calculate() {
             const i = document.getElementById('calc-in').value;
             try {
-                const r = eval(i.replace(/x/g, '*'));
-                playSound(1000);
+                const r = eval(i);
                 document.getElementById('calc-res').innerText = r;
                 const h = document.getElementById('calc-history');
                 if(h.innerText.includes("Empty")) h.innerHTML = "";
                 h.innerHTML = `<div>${i}=${r}</div>` + h.innerHTML;
-                log.push(`${i}=${r}`);
-            } catch { alert("ERR"); }
+            } catch { alert("MATH_ERROR"); }
         }
 
-        // CV CONSTRUCT
         function generateCV() {
             const n = document.getElementById('uName').value;
-            if(!n) return alert("Name required.");
-            playSound(500);
-            document.getElementById('cv-output').innerHTML = `<h1 style="font-size:30px; border-bottom:3px solid #000; font-weight:900;">${n.toUpperCase()}</h1><p style="margin:10px 0;"><b>Credentials:</b> ${document.getElementById('uEdu').value}</p><p><b>Skills:</b> ${document.getElementById('uSkill').value}</p><p><b>Exp:</b> ${document.getElementById('uExp').value}</p><footer style="margin-top:30px; font-size:9px; color:#777;">ARCHITECT: KONYAK // SECTOR 3001</footer>`;
+            if(!n) return alert("Identify yourself, Architect.");
+            document.getElementById('cv-output').innerHTML = `<h1 style="font-size:24px; border-bottom:3px solid #000;">${n.toUpperCase()}</h1><p><b>EDU:</b> ${document.getElementById('uEdu').value}</p><p><b>SKILLS:</b> ${document.getElementById('uSkill').value}</p><p><b>EXP:</b> ${document.getElementById('uExp').value}</p>`;
             document.getElementById('cv-area').classList.remove('hidden');
         }
 
-        function saveResume() { window.print(); }
-        function downloadHistory() {
-            const blob = new Blob([log.join('\n')], {type: 'text/plain'});
-            const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'calc_log.txt'; a.click();
+        // MATRIX EFFECT
+        const mCanvas = document.getElementById('matrix-canvas');
+        const mCtx = mCanvas.getContext('2d');
+        let mActive = false;
+        let drops = [];
+        function toggleMatrix() {
+            mActive = !mActive;
+            mCanvas.style.opacity = mActive ? "1" : "0";
+            if(mActive) {
+                mCanvas.width = window.innerWidth; mCanvas.height = window.innerHeight;
+                drops = Array(Math.floor(mCanvas.width/20)).fill(1);
+                drawMatrix();
+            }
         }
-
-        function toggleKonyak() {
-            alert("Konyak Language Module Initializing... This is your future masterpiece!");
-            playSound(1200);
+        function drawMatrix() {
+            if(!mActive) return;
+            mCtx.fillStyle = "rgba(0, 0, 0, 0.05)";
+            mCtx.fillRect(0,0,mCanvas.width,mCanvas.height);
+            mCtx.fillStyle = "#00ff41";
+            drops.forEach((y, i) => {
+                mCtx.fillText(String.fromCharCode(65+Math.random()*33), i*20, y*20);
+                if(y*20 > mCanvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            });
+            requestAnimationFrame(drawMatrix);
         }
     </script>
 </body>
