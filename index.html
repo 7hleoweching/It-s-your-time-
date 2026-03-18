@@ -3,147 +3,258 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VISION 2029 | C. WECHING KONYAK</title>
+    <title>TERMINAL 3001 | ARCHITECT KONYAK</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@300;700&display=swap');
-        :root { --bg: #020617; --text: #f1f5f9; --sky: #00f2ff; }
-        .light-mode { --bg: #f8fafc; --text: #0f172a; --sky: #2563eb; }
-        body { background-color: var(--bg); color: var(--text); font-family: 'Space Grotesk', sans-serif; transition: 0.3s; padding-bottom: 80px; }
-        .mono { font-family: 'JetBrains Mono', monospace; }
-        .glass { background: rgba(30, 41, 59, 0.4); backdrop-filter: blur(15px); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 24px; }
-        input, textarea { background: rgba(0,0,0,0.2) !important; border: 1px solid rgba(255,255,255,0.1) !important; color: inherit !important; width: 100%; padding: 12px; border-radius: 12px; font-size: 14px; margin-bottom: 10px; }
-        .cv-preview { background: white; color: black; font-family: serif; padding: 40px; border-radius: 8px; margin-top: 20px; text-align: left; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .neon-red { color: #ff4444; text-shadow: 0 0 10px rgba(255, 68, 68, 0.3); }
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=Orbitron:wght@400;900&display=swap');
+        :root { --neon: #00f2ff; --void: #020617; --matrix: #00ff41; }
+        body { background: var(--void); color: white; font-family: 'Fira Code', monospace; overflow-x: hidden; margin: 0; transition: 0.5s; }
+        #canvas-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.2; }
+        .orbitron { font-family: 'Orbitron', sans-serif; }
+        
+        /* THE SURPRISE: MATRIX OVERLAY */
+        #matrix-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 50; pointer-events: none; opacity: 0; transition: 1s; }
+        
+        .hologram { background: rgba(0, 242, 255, 0.03); border: 1px solid rgba(0, 242, 255, 0.2); backdrop-filter: blur(12px); border-radius: 4px; position: relative; }
+        .hologram:hover { border-color: var(--neon); box-shadow: 0 0 15px rgba(0, 242, 255, 0.2); }
+        
+        input, textarea { background: rgba(0, 0, 0, 0.7) !important; border: 1px solid rgba(0, 242, 255, 0.3) !important; color: var(--neon) !important; padding: 12px; outline: none; transition: 0.3s; }
+        input:focus { border-color: var(--neon) !important; box-shadow: 0 0 10px var(--neon); }
+
+        .ticker-wrap { width: 100%; overflow: hidden; background: rgba(0, 242, 255, 0.05); border-top: 1px solid var(--neon); }
+        .ticker { display: inline-block; white-space: nowrap; padding-right: 100%; animation: ticker 45s linear infinite; }
+        @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
+
+        @media print { .no-print { display: none !important; } body { background: white !important; color: black !important; } }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center px-4 py-8">
+<body class="p-4 md:p-8">
 
-    <button onclick="document.body.classList.toggle('light-mode')" class="fixed top-4 right-4 glass p-2 rounded-full text-[10px] mono z-50">🌓 MODE</button>
+    <canvas id="canvas-bg"></canvas>
+    <canvas id="matrix-canvas"></canvas>
 
-    <header class="text-center mb-10">
-        <h1 class="text-4xl font-black italic uppercase tracking-tighter">FUTURE <span class="text-sky-400">NAGALAND</span></h1>
-        <p class="mono text-[10px] opacity-50 uppercase tracking-widest mt-1">Lead Architect: C. Weching Konyak</p>
-    </header>
-
-    <div class="grid grid-cols-2 gap-4 w-full max-w-lg mb-8">
-        <div class="glass p-4 text-center border-t-2 border-sky-400">
-            <p class="mono text-[8px] opacity-60 uppercase mb-1">Reality (Clockwise)</p>
-            <div id="clock-forward" class="text-xl font-bold text-sky-400 mono">00:00:00</div>
+    <div class="flex justify-between items-center mb-8 no-print orbitron text-[9px] tracking-widest text-cyan-500">
+        <div class="flex items-center gap-2">
+            <span class="w-2 h-2 bg-green-500 rounded-full animate-ping"></span> ONLINE: ARCHITECT_CORE
         </div>
-        <div class="glass p-4 text-center border-t-2 border-red-500">
-            <p class="mono text-[8px] opacity-60 uppercase mb-1">Doubters (Anti-Clock)</p>
-            <div id="clock-backward" class="text-xl font-bold neon-red mono">00:00:00</div>
+        <div class="flex gap-6">
+            <span id="clock-real">REALITY: 00:00:00</span>
+            <span id="clock-meta" class="text-red-500">META_DECAY: 00:00:00</span>
         </div>
     </div>
 
-    <section class="w-full max-w-lg glass p-5 mb-8">
-        <h3 class="mono text-xs text-sky-400 mb-3 font-bold flex items-center justify-center gap-2">
-            <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> NAGA-AI GLOBAL CORE
-        </h3>
-        <div id="chat-box" class="h-48 overflow-y-auto text-[11px] space-y-3 p-3 bg-black/20 rounded-2xl mb-4 text-left">
-            <div class="text-sky-400/70 italic">AI: Ask me "Meaning of success" or "A for".</div>
-        </div>
-        <div class="flex gap-2">
-            <input id="chat-in" type="text" class="mb-0" placeholder="Type a question...">
-            <button onclick="sendChat()" class="bg-sky-500 text-black px-4 py-2 rounded-xl font-bold text-xs">ASK AI</button>
-        </div>
-    </section>
+    <header class="text-center mb-12 no-print cursor-pointer" onclick="toggleMatrix()">
+        <h1 class="orbitron text-4xl font-black tracking-tighter uppercase italic hover:text-cyan-300 transition">
+            Naga<span class="text-cyan-400">Gen</span> OS v3001
+        </h1>
+        <p class="text-[9px] opacity-40 mt-2 uppercase tracking-[0.5em]">Click Title to Hack Reality // Architect: C. Weching Konyak</p>
+    </header>
 
-    <section class="w-full max-w-lg glass p-6 mb-8 border-l-4 border-sky-400">
-        <h3 class="mono text-xs text-sky-400 mb-4 font-bold uppercase text-left">Resume Architect</h3>
-        <input id="uName" type="text" placeholder="Full Name">
-        <input id="uEdu" type="text" placeholder="Qualification (e.g. 12 Pass)">
-        <input id="uSkill" type="text" placeholder="Top Skills">
-        <textarea id="uExp" rows="3" placeholder="Experience or Project Details"></textarea>
-        <div class="grid grid-cols-2 gap-2">
-            <button onclick="generateCV()" class="py-4 bg-sky-500 text-slate-950 font-black rounded-xl uppercase text-[10px] tracking-widest">Generate CV</button>
-            <button onclick="shareWhatsApp()" class="py-4 bg-green-500 text-white font-black rounded-xl uppercase text-[10px] tracking-widest">Share to WA</button>
+    <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 mb-24">
+        
+        <div class="space-y-6 no-print">
+            <section class="hologram p-5 border-t-2 border-cyan-500">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="orbitron text-xs text-cyan-400">NEURAL_VOICE_CHAT</h2>
+                    <button onclick="toggleKonyak()" class="text-[8px] border border-cyan-800 px-2 rounded hover:bg-cyan-500 hover:text-black">TRANSLATE: KONYAK</button>
+                </div>
+                <div id="chat-box" class="h-48 overflow-y-auto mb-4 text-[11px] space-y-3 bg-black/40 p-3 rounded border border-white/5">
+                    <div class="opacity-50">System: Vocal link ready...</div>
+                </div>
+                <div class="flex gap-2">
+                    <input id="chat-in" type="text" placeholder="Speak or Type...">
+                    <button id="mic-btn" onclick="startVoice()" class="p-2 border border-cyan-500 rounded">🎤</button>
+                    <button onclick="sendChat()" class="bg-cyan-500 text-black px-4 font-bold text-xs orbitron rounded">ASK</button>
+                </div>
+            </section>
+
+            <section class="hologram p-5 border-t-2 border-yellow-500">
+                <h2 class="orbitron text-xs mb-4 text-yellow-500">NAGALAND_STUDENT_CAREER</h2>
+                <div class="text-[10px] space-y-2 opacity-80">
+                    <div class="p-2 border border-white/5 rounded">🎓 <b>Scholarship:</b> Post-Matric & Merit 2026 Portal Syncing.</div>
+                    <div class="p-2 border border-white/5 rounded">🏛️ <b>NPSC:</b> Tech-Services Exam Syllabus available in AI.</div>
+                    <div class="p-2 border border-white/5 rounded">💼 <b>Jobs:</b> Web Dev openings in Dimapur & Kohima.</div>
+                </div>
+            </section>
         </div>
-    </section>
 
-    <section id="cv-area" class="w-full max-w-lg hidden mb-10">
-        <div id="cv-output" class="cv-preview"></div>
-        <button onclick="window.print()" class="mt-4 w-full py-3 border-2 border-sky-400 text-sky-400 rounded-xl font-bold text-xs uppercase">Save as PDF</button>
-    </section>
-
-    <section class="w-full max-w-lg glass p-6 mb-8">
-        <h3 class="mono text-xs text-sky-400 mb-4 font-bold uppercase">Technical Planner</h3>
-        <div class="flex gap-2 mb-4">
-            <input id="calc-in" type="text" class="mono" placeholder="Math (e.g. 500x12)">
-            <button onclick="calculate()" class="bg-white text-black px-4 py-2 rounded-xl font-bold text-xs">SOLVE</button>
+        <div>
+            <section class="hologram p-6 no-print border-l-4 border-cyan-400">
+                <h2 class="orbitron text-xs mb-6 text-cyan-400">BIO_DATA_ARCHITECT</h2>
+                <div class="space-y-3">
+                    <input id="uName" type="text" placeholder="NAME">
+                    <input id="uEdu" type="text" placeholder="QUALIFICATION">
+                    <input id="uSkill" type="text" placeholder="CORE ABILITIES">
+                    <textarea id="uExp" rows="4" placeholder="HISTORICAL DATA / PROJECTS"></textarea>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="generateCV()" class="bg-cyan-500 text-black py-3 font-bold text-[10px] orbitron rounded">CONSTRUCT</button>
+                        <button onclick="shareWhatsApp()" class="border border-green-500 text-green-500 py-3 font-bold text-[10px] orbitron rounded">SYNC</button>
+                    </div>
+                </div>
+            </section>
+            <div id="cv-area" class="hidden mt-6">
+                <div id="cv-output" class="bg-white text-black p-8 shadow-2xl rounded-sm"></div>
+                <button onclick="saveResume()" class="w-full mt-4 bg-cyan-600 text-white py-3 font-bold no-print text-xs orbitron">ARCHIVE TO PDF</button>
+            </div>
         </div>
-        <div class="bg-black/20 p-6 rounded-2xl text-3xl font-bold text-center" id="calc-res">0</div>
-    </section>
 
-    <footer class="text-center opacity-30 pb-10">
-        <p class="mono text-[8px] tracking-widest uppercase">© 2026-2029 // Designed by C. Weching Konyak</p>
-    </footer>
+        <div class="no-print space-y-6">
+            <section class="hologram p-6 border-r-2 border-cyan-500">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="orbitron text-xs text-cyan-400">MATH_PROCESSOR</h2>
+                    <button onclick="downloadHistory()" class="text-[8px] underline opacity-30">EXPORT_LOG</button>
+                </div>
+                <input id="calc-in" type="text" class="text-2xl font-bold mb-2" placeholder="0">
+                <button onclick="calculate()" class="w-full bg-white text-black py-2 font-bold orbitron text-[10px] mb-4">SOLVE</button>
+                
+                <div class="flex gap-4">
+                    <div id="calc-res" class="flex-1 text-4xl font-black text-cyan-400 bg-black/50 p-4 border border-white/10 rounded">0</div>
+                    <div class="w-2/5 bg-black/80 p-2 text-[9px] h-24 overflow-y-auto border border-white/10 rounded">
+                        <p class="opacity-30 border-b border-white/10 pb-1 mb-1">HISTORY</p>
+                        <div id="calc-history" class="italic opacity-60">Empty</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div class="fixed bottom-0 left-0 ticker-wrap no-print">
+        <div class="ticker orbitron text-[10px] py-2 text-cyan-400">
+            [UPDATE] Konyak Language App Beta Launch 2029... [NEWS] NIELIT Kohima signs AI Partnership... [JOBS] 50+ Web Developer Roles in Nagaland IT Park... [TECH] Quantum Computers now legal in Sector 7... 
+        </div>
+    </div>
 
     <script>
-        // CLOCK
-        setInterval(() => {
-            const now = new Date();
-            document.getElementById('clock-forward').innerText = now.toLocaleTimeString();
-            const h = 23 - now.getHours(), m = 59 - now.getMinutes(), s = 59 - now.getSeconds();
-            document.getElementById('clock-backward').innerText = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-        }, 1000);
+        // BACKGROUND NEURAL NET
+        const canvas = document.getElementById('canvas-bg');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        function initCanvas() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            for(let i=0; i<80; i++) particles.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx: (Math.random()-0.5)*0.5, vy: (Math.random()-0.5)*0.5});
+        }
+        function animate() {
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            ctx.fillStyle = "#00f2ff"; ctx.strokeStyle = "rgba(0, 242, 255, 0.1)";
+            particles.forEach(p => {
+                p.x += p.vx; p.y += p.vy;
+                if(p.x<0 || p.x>canvas.width) p.vx *= -1; if(p.y<0 || p.y>canvas.height) p.vy *= -1;
+                ctx.beginPath(); ctx.arc(p.x, p.y, 1, 0, Math.PI*2); ctx.fill();
+            });
+            requestAnimationFrame(animate);
+        }
+        initCanvas(); animate();
 
-        // CALC
-        function calculate() {
-            let input = document.getElementById('calc-in').value;
-            let clean = input.replace(/×/g, '*').replace(/x/g, '*').replace(/÷/g, '/');
-            try { document.getElementById('calc-res').innerText = eval(clean); } catch { alert("Invalid Math"); }
+        // SURPRISE: MATRIX EFFECT
+        const mCanvas = document.getElementById('matrix-canvas');
+        const mCtx = mCanvas.getContext('2d');
+        let matrixActive = false;
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$+-*/=%@#&";
+        let drops = [];
+        function initMatrix() {
+            mCanvas.width = window.innerWidth; mCanvas.height = window.innerHeight;
+            drops = Array(Math.floor(mCanvas.width/20)).fill(1);
+        }
+        function drawMatrix() {
+            if(!matrixActive) return;
+            mCtx.fillStyle = "rgba(0, 0, 0, 0.05)";
+            mCtx.fillRect(0, 0, mCanvas.width, mCanvas.height);
+            mCtx.fillStyle = "#00ff41";
+            mCtx.font = "15px monospace";
+            drops.forEach((y, i) => {
+                const text = chars[Math.floor(Math.random()*chars.length)];
+                mCtx.fillText(text, i*20, y*20);
+                if(y*20 > mCanvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            });
+            requestAnimationFrame(drawMatrix);
+        }
+        function toggleMatrix() {
+            matrixActive = !matrixActive;
+            mCanvas.style.opacity = matrixActive ? "1" : "0";
+            if(matrixActive) { initMatrix(); drawMatrix(); playSound(440); }
         }
 
-        // AI
-        function sendChat() {
-            const input = document.getElementById('chat-in').value.toLowerCase();
-            const box = document.getElementById('chat-box');
-            if(!input) return;
-            box.innerHTML += `<div class="text-right text-white/40 italic">"${input}"</div>`;
-            
-            let reply = "Processing vision data...";
-            if(input.includes("ceo of google")) reply = "Sundar Pichai is the CEO of Google.";
-            if(input.includes("a for")) reply = "A stands for Artificial Intelligence—the engine of our future!";
-            if(input.includes("success")) reply = "Success is moving from failure to failure without loss of enthusiasm.";
+        // SURPRISE: SOUND EFFECTS
+        function playSound(freq) {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.frequency.value = freq; gain.gain.value = 0.05;
+            osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+        }
 
-            const speech = new SpeechSynthesisUtterance(reply);
-            window.speechSynthesis.speak(speech);
+        // CLOCKS
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('clock-real').innerText = `REALITY: ${now.toLocaleTimeString()}`;
+            const h = 23-now.getHours(), m = 59-now.getMinutes(), s = 59-now.getSeconds();
+            document.getElementById('clock-meta').innerText = `META_DECAY: ${h}:${m}:${s}`;
+        }, 1000);
+
+        // VOICE & AI
+        function startVoice() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) return alert("Browser error.");
+            const rec = new SpeechRecognition();
+            rec.onstart = () => { document.getElementById('mic-btn').classList.add('mic-active'); playSound(880); };
+            rec.onresult = (e) => { document.getElementById('chat-in').value = e.results[0][0].transcript; sendChat(); };
+            rec.onend = () => document.getElementById('mic-btn').classList.remove('mic-active');
+            rec.start();
+        }
+
+        function sendChat() {
+            const val = document.getElementById('chat-in').value.toLowerCase();
+            const box = document.getElementById('chat-box');
+            if(!val) return;
+            playSound(660);
+            let reply = "Processing vision query...";
+            if(val.includes("cm of nagaland")) reply = "Neiphiu Rio is the current CM.";
+            if(val.includes("google ceo")) reply = "Sundar Pichai is the CEO of Google.";
+            
+            box.innerHTML += `<div class="text-right opacity-30">> ${val}</div>`;
             setTimeout(() => {
-                box.innerHTML += `<div class="text-sky-400 font-bold">AI: ${reply}</div>`;
+                box.innerHTML += `<div class="text-cyan-400 font-bold">AI: ${reply}</div>`;
                 box.scrollTop = box.scrollHeight;
-            }, 600);
+                window.speechSynthesis.speak(new SpeechSynthesisUtterance(reply));
+            }, 500);
             document.getElementById('chat-in').value = "";
         }
 
-        // CV LOGIC
-        function generateCV() {
-            const name = document.getElementById('uName').value;
-            const edu = document.getElementById('uEdu').value;
-            const skill = document.getElementById('uSkill').value;
-            const exp = document.getElementById('uExp').value;
-            if(!name || !edu) return alert("Enter Name & Education");
-
-            document.getElementById('cv-output').innerHTML = `
-                <h1 style="font-size:24px; border-bottom:2px solid #333;">${name.toUpperCase()}</h1>
-                <p><strong>Objective:</strong> Driving innovation via modern technical skills.</p>
-                <h3>EDUCATION</h3><p>${edu}</p>
-                <h3>CORE SKILLS</h3><p>${skill}</p>
-                <h3>PROJECTS</h3><p>${exp}</p>
-            `;
-            document.getElementById('cv-area').classList.remove('hidden');
-            document.getElementById('cv-area').scrollIntoView({ behavior: 'smooth' });
+        // MATH
+        let log = [];
+        function calculate() {
+            const i = document.getElementById('calc-in').value;
+            try {
+                const r = eval(i.replace(/x/g, '*'));
+                playSound(1000);
+                document.getElementById('calc-res').innerText = r;
+                const h = document.getElementById('calc-history');
+                if(h.innerText.includes("Empty")) h.innerHTML = "";
+                h.innerHTML = `<div>${i}=${r}</div>` + h.innerHTML;
+                log.push(`${i}=${r}`);
+            } catch { alert("ERR"); }
         }
 
-        // WHATSAPP SHARE LOGIC
-        function shareWhatsApp() {
-            const name = document.getElementById('uName').value;
-            const edu = document.getElementById('uEdu').value;
-            if(!name) return alert("Please enter your name first!");
-            
-            const text = `🚀 Check out my professional CV! %0A%0AArchitect: ${name} %0AQualification: ${edu} %0A%0AGenerated on Vision 2029 Terminal: https://7hleoweching.github.io/`;
-            window.open(`https://wa.me/?text=${text}`, '_blank');
+        // CV CONSTRUCT
+        function generateCV() {
+            const n = document.getElementById('uName').value;
+            if(!n) return alert("Name required.");
+            playSound(500);
+            document.getElementById('cv-output').innerHTML = `<h1 style="font-size:30px; border-bottom:3px solid #000; font-weight:900;">${n.toUpperCase()}</h1><p style="margin:10px 0;"><b>Credentials:</b> ${document.getElementById('uEdu').value}</p><p><b>Skills:</b> ${document.getElementById('uSkill').value}</p><p><b>Exp:</b> ${document.getElementById('uExp').value}</p><footer style="margin-top:30px; font-size:9px; color:#777;">ARCHITECT: KONYAK // SECTOR 3001</footer>`;
+            document.getElementById('cv-area').classList.remove('hidden');
+        }
+
+        function saveResume() { window.print(); }
+        function downloadHistory() {
+            const blob = new Blob([log.join('\n')], {type: 'text/plain'});
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'calc_log.txt'; a.click();
+        }
+
+        function toggleKonyak() {
+            alert("Konyak Language Module Initializing... This is your future masterpiece!");
+            playSound(1200);
         }
     </script>
 </body>
